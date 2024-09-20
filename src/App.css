@@ -1,0 +1,37 @@
+@import url('https://fonts.googleapis.com/css2?family=Mulish:ital,wght@0,200..1000;1,200..1000&display=swap');
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: "Mulish", sans-serif;
+}
+
+li,
+a {
+  list-style: none;
+  text-decoration: none;
+}
+
+.loading {
+  animation: loading 2s infinite linear;
+}
+
+.form-pagination {
+  margin: 3rem auto;
+  text-align: center;
+}
+
+/* Bu video qo'yish uchun chiqadigan inputning style */
+.ql-tooltip.ql-editing {
+  left: 15px !important;
+}
+
+/* Bu video uchun style */
+.ql-editor iframe {
+  width: 100%;
+  aspect-ratio: 16/9;
+}
+.ql-container.ql-snow{
+  min-height: 150px;
+}

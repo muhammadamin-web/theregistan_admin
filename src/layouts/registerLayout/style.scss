@@ -1,0 +1,66 @@
+@import url(https://fonts.googleapis.com/css2?family=Inter:wght@100;200;300;400;500;600;800;900&display=swap);
+.register-section {
+  width: 100%;
+  height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow-x: auto;
+  &::-webkit-scrollbar {
+    display: none;
+  }
+  * {
+    font-family: "Inter", sans-serif;
+  }
+  
+  label {
+    color: #111;
+    font-size: 1rem;
+    font-weight: 400;
+    text-transform: capitalize;
+    margin-bottom: 12px;
+    &::after {
+      content: "*";
+      color: #ff3535;
+      font-size: 1rem;
+    }
+  }
+  input {
+    border-radius: 10px;
+    width: 100%;
+    background: #f8f8f8;
+    padding: 19px 40px 19px 16px;
+    color: #989898;
+    font-size: 1rem;
+    font-weight: 400;
+    border-color: transparent;
+    outline: none;
+    border-width: 1.5px;
+    &::placeholder {
+      color: #989898;
+      text-transform: capitalize;
+    }
+  }
+  .form-input-div {
+    display: flex;
+    flex-direction: column;
+    div {
+      position: relative;
+      width: 100%;
+    }
+    svg {
+      position: absolute;
+      top: 50%;
+      cursor: pointer;
+      font-size: 1.3rem;
+      right: 16px;
+      transform: translateY(-50%);
+    }
+  }
+  .form-line {
+    width: 100%;
+    height: 1px;
+    background: #dadeea;
+    margin-block: 12px;
+  }
+}

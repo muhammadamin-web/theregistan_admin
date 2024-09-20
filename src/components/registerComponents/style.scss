@@ -1,0 +1,40 @@
+.form-head-div {
+  h1 {
+    color: #000;
+    font-size: 2.2rem;
+    font-weight: 600;
+    margin-bottom: 20px;
+  }
+  p {
+    color: rgba(0, 0, 0, 0.5);
+    font-size: 1rem;
+    font-weight: 500;
+  }
+}
+.reg-bottom {
+  color: rgba(0, 0, 0, 0.5);
+  font-size: 1rem;
+  font-weight: 500;
+  a {
+    color: #08a284;
+    font-size: 1rem;
+    font-weight: 500;
+    text-underline-offset: 4px;
+    margin-left: 10px;
+    &:hover {
+      text-decoration-line: underline;
+    }
+  }
+}
+.err-message {
+  border-radius: 12px;
+  border: 2px dashed #ff3535;
+  background: #fff5f5;
+  padding: 16px;
+  p {
+    color: #111;
+    font-size: 1rem;
+    font-weight: 400;
+    line-height: 1.5;
+  }
+}

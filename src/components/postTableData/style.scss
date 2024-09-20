@@ -1,0 +1,9 @@
+.post-tbody {
+  width: 100%;
+  &:before {
+    line-height: 1.2rem;
+    content: ".";
+    color: white;
+    display: block;
+  }
+}

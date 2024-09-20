@@ -1,0 +1,29 @@
+.sideBar_nav-item {
+  width: 100%;
+  a {
+    display: flex;
+    align-items: center;
+    width: 100%;
+    padding: 13px 16px;
+    gap: 6px;
+    border-radius: 8px;
+    cursor: pointer;
+    color: #404040;
+    font-size: 1rem;
+    font-weight: 400;
+    transition: background 0.2s ease, color 0.2s ease;
+    text-transform: capitalize;
+    &:hover {
+      background: #08a284;
+      color: #fff;
+    }
+    svg {
+      width: 20px;
+      height: 20px;
+    }
+  }
+  .nav-active {
+    background: #08a284;
+    color: #fff;
+  }
+}

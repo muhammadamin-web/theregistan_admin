@@ -1,0 +1,36 @@
+.button-component {
+  background: transparent;
+  border: none;
+  width: 100%;
+  padding: 12px 24px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 6px;
+  border-radius: 24px;
+  background: #0bc19c;
+  color: #fff;
+  font-size: 1.1rem;
+  cursor: pointer;
+  transition: background 0.2s ease;
+  margin-block: 24px;
+  span {
+    display: flex;
+    align-items: center;
+  }
+
+  &:hover {
+    background: #08a284;
+  }
+}
+.martinTop {
+  margin-top: auto;
+}
+@keyframes loading {
+  from {
+    rotate: 0deg;
+  }
+  to {
+    rotate: 360deg;
+  }
+}
