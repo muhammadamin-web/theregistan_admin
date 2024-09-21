@@ -35,3 +35,24 @@ a {
 .ql-container.ql-snow{
   min-height: 150px;
 }
+.ql-editor p{
+  font-size: 20px;
+}
+.ql-editor h1{
+  font-size: 32px !important;
+}
+.ql-editor h2{
+  font-size: 28px !important;
+}
+.ql-editor h3{
+  font-size: 24px !important;
+}
+.ql-editor h4{
+  font-size: 20px !important;
+}
+.ql-editor h5{
+  font-size: 16px !important;
+}
+.ql-editor h6{
+  font-size: 12px !important;
+}

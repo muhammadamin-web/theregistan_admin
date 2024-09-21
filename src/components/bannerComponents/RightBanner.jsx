@@ -11,142 +11,50 @@ import { changeLoadingRefresh } from "../../store/homeSlice.js";
 import postImage from "./../ImageCompressor";
 
 function RightBanner() {
+  // bannerData ni Redux storidan olamiz
   const { bannerData } = useSelector((state) => state.home);
   const dispatch = useDispatch();
-  const [imgData, setImgData] = useState();
-  const [body, setBody] = useState({
-    ...bannerData,
-    image: bannerData?.image?._id,
-  });
+
+  // bannerData ni tekshiramiz va massiv qilib sozlaymiz
+  const [bodyList, setBodyList] = useState(
+    Array.isArray(bannerData)
+      ? bannerData.map((banner) => ({
+          ...banner,
+          image: banner?.image?._id,
+          imgUrl: "",
+          imgData: null,
+        }))
+      : []
+  );
+
   const [errorTrue, setErrorTrue] = useState(false);
   const [errorInfos, setErrorInfos] = useState({ status: "", message: "" });
-  const [imgUrl, setImgUrl] = useState("");
   const imgRef = useRef();
 
-  const putFunc2 = () => {
-    dispatch(changeLoadingRefresh(true));
-    if (imgUrl && bannerData?.image?._id) {
-      console.log(1);
-      deleteDataFromApi(`/image/${bannerData.image._id}`).then((res) => {
-        postDataFromApi("/image/upload", imgData).then((res) => {
-          putDataFromApi(`/banner/${bannerData._id}`, {
-            ...body,
-            image: res.data._id,
-          }).then((res) => {
-            dispatch(changeLoadingRefresh(false));
-            if (res.success) {
-              setErrorInfos({
-                status: "",
-                message: res?.message,
-                type: "success",
-              });
-              setErrorTrue(true);
-            } else {
-              setErrorInfos({
-                status: `Error Code ${res?.status}`,
-                message: res?.data?.message,
-                type: "error",
-              });
-              setErrorTrue(true);
-            }
-            setTimeout(() => {
-              setErrorTrue(false);
-            }, 3000);
-          });
-        });
-      });
-    } else if (imgUrl && !bannerData?.image?._id) {
-      console.log(2);
-      postDataFromApi("/image/upload", imgData).then((res) => {
-        putDataFromApi(`/banner/${bannerData._id}`, {
-          ...body,
-          image: res.data._id,
-        }).then((res) => {
-          dispatch(changeLoadingRefresh(false));
-          if (res.success) {
-            setErrorInfos({
-              status: "",
-              message: res?.message,
-              type: "success",
-            });
-            setErrorTrue(true);
-          } else {
-            setErrorInfos({
-              status: `Error Code ${res?.status}`,
-              message: res?.data?.message,
-              type: "error",
-            });
-            setErrorTrue(true);
-          }
-          setTimeout(() => {
-            setErrorTrue(false);
-          }, 3000);
-        });
-      });
-    } else {
-      console.log(3);
-      putDataFromApi(`/banner/${bannerData._id}`, body).then((res) => {
-        dispatch(changeLoadingRefresh(false));
-        if (res.success) {
-          setErrorInfos({
-            status: "",
-            message: res?.message,
-            type: "success",
-          });
-          setErrorTrue(true);
-        } else {
-          setErrorInfos({
-            status: `Error Code ${res?.status}`,
-            message: res?.data?.message,
-            type: "error",
-          });
-          setErrorTrue(true);
-        }
-        setTimeout(() => {
-          setErrorTrue(false);
-        }, 3000);
-      });
-    }
-  };
-
-  const putFunc = async () => {
+  const putFunc = async (index) => {
     dispatch(changeLoadingRefresh(true));
 
-    if (imgUrl) {
-      if (bannerData?.image?._id) {
-        await deleteDataFromApi(`/image/${bannerData.image._id}`);
+    const currentBody = bodyList[index];
+
+    if (currentBody.imgUrl) {
+      if (currentBody?.image?._id) {
+        await deleteDataFromApi(`/image/${currentBody.image._id}`);
       }
-      const uploadedImage = await postDataFromApi("/image/upload", imgData);
-      const updatedData = { ...body, image: uploadedImage.data._id };
+      const uploadedImage = await postDataFromApi("/image/upload", currentBody.imgData);
+      const updatedData = { ...currentBody, image: uploadedImage.data._id };
 
-      const res = await putDataFromApi(
-        `/banner/${bannerData._id}`,
-        updatedData
-      );
-      dispatchChangeLoadingAndHandleErrors(
-        false,
-        res?.success ? "success" : "error",
-        res
-      );
+      const res = await putDataFromApi(`/banner/${currentBody._id}`, updatedData);
+      dispatchChangeLoadingAndHandleErrors(false, res?.success ? "success" : "error", res);
     } else {
-      const res = await putDataFromApi(`/banner/${bannerData._id}`, body);
-      dispatchChangeLoadingAndHandleErrors(
-        false,
-        res?.success ? "success" : "error",
-        res
-      );
+      const res = await putDataFromApi(`/banner/${currentBody._id}`, currentBody);
+      dispatchChangeLoadingAndHandleErrors(false, res?.success ? "success" : "error", res);
     }
   };
 
-  const dispatchChangeLoadingAndHandleErrors = (
-    loadingValue,
-    messageType,
-    res
-  ) => {
+  const dispatchChangeLoadingAndHandleErrors = (loadingValue, messageType, res) => {
     dispatch(changeLoadingRefresh(loadingValue));
 
-    const successMessage =
-      messageType === "success" ? "" : `Error Code ${res?.status}`;
+    const successMessage = messageType === "success" ? "" : `Error Code ${res?.status}`;
 
     setErrorInfos({
       status: successMessage,
@@ -187,69 +95,87 @@ function RightBanner() {
           />
         </Space>
       )}
+
       <div className={"banner_content"}>
-        <form action="">
-          <label htmlFor="">Footer Banner</label>
-          <input
-            placeholder="Paste Link"
-            type="text"
-            value={body.link}
-            onChange={(e) => {
-              setBody({ ...body, link: e.target.value });
-            }}
-          />
-        </form>
-        <div className="changePhotoBtn">
-          <button
-            onClick={() => {
-              imgRef.current.click();
-            }}
-          >
-            Change Photo
-          </button>
-        </div>
-        <div className="form_div">
-          <input
-            ref={imgRef}
-            className={"input_img"}
-            type="file"
-            accept="image/*"
-            onChange={(event) => {
-              postImage(event, setImgUrl, setImgData);
-            }}
-          />
-          {
-            <label>
-              {(imgUrl || bannerData?.image?.name) && (
-                <img
-                  src={!imgUrl ? BASE_IMG_URL + bannerData.image.name : imgUrl}
-                />
-              )}
-            </label>
-          }
-        </div>
-        <div className="checkbox-wrapper-48">
-          <input
-            type="checkbox"
-            name="cb"
-            id="cb-48"
-            checked={body.status}
-            onChange={() => {
-              setBody({ ...body, status: !body.status });
-            }}
-          />
-          <label htmlFor="cb-48">
-            {body.status ? "Active qilindi" : "Active qilish"}{" "}
-          </label>
-        </div>
-        <button
-          onClick={(e) => {
-            e.preventDefault();
-            putFunc();
-          }}
-        >
-          Publish
-        </button>
+        {bodyList.map((body, index) => (
+          <form key={body._id} action="">
+            <label htmlFor="">Footer Banner {index + 1}</label>
+            <input
+              placeholder="Paste Link"
+              type="text"
+              value={body.link}
+              onChange={(e) => {
+                const newBodyList = [...bodyList];
+                newBodyList[index].link = e.target.value;
+                setBodyList(newBodyList);
+              }}
+            />
+
+            <div className="changePhotoBtn">
+              <button
+                onClick={() => {
+                  imgRef.current.click();
+                }}
+              >
+                Change Photo
+              </button>
+            </div>
+
+            <div className="form_div">
+              <input
+                ref={imgRef}
+                className={"input_img"}
+                type="file"
+                accept="image/*"
+                onChange={(event) => {
+                  postImage(event, (url) => {
+                    const newBodyList = [...bodyList];
+                    newBodyList[index].imgUrl = url;
+                    setBodyList(newBodyList);
+                  }, (data) => {
+                    const newBodyList = [...bodyList];
+                    newBodyList[index].imgData = data;
+                    setBodyList(newBodyList);
+                  });
+                }}
+              />
+              {body.imgUrl || body?.image?.name ? (
+                <label>
+                  <img
+                    src={!body.imgUrl ? BASE_IMG_URL + body.image.name : body.imgUrl}
+                    alt="Banner"
+                  />
+                </label>
+              ) : null}
+            </div>
+
+            <div className="checkbox-wrapper-48">
+              <input
+                type="checkbox"
+                name="cb"
+                id={`cb-${index}`}
+                checked={body.status}
+                onChange={() => {
+                  const newBodyList = [...bodyList];
+                  newBodyList[index].status = !newBodyList[index].status;
+                  setBodyList(newBodyList);
+                }}
+              />
+              <label htmlFor={`cb-${index}`}>
+                {body.status ? "Active qilindi" : "Active qilish"}
+              </label>
+            </div>
+
+            <button
+              onClick={(e) => {
+                e.preventDefault();
+                putFunc(index);
+              }}
+            >
+              Publish
+            </button>
+          </form>
+        ))}
       </div>
     </>
   );
