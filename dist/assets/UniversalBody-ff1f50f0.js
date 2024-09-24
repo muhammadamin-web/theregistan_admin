@@ -1,0 +1,1 @@
+import{F as a,w as s}from"./index-686e0b19.js";import{L as i}from"./LoadingRefresh-b9dcae7d.js";function m({children:e}){const{loadingRefresh:o}=a(r=>r.home);return s.jsxs("div",{className:"universal_body",children:[o&&s.jsx(i,{}),e]})}export{m as U};
