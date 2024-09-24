@@ -15,7 +15,6 @@ export const fetchDataFromApi = async (url, params) => {
     return err;
   }
 };
-
 export const postDataFromApi = async (url, body) => {
   const TMDB_TOKEN = localStorage.getItem("token");
   const headers = {
