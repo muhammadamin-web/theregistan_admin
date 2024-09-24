@@ -1,0 +1,14 @@
+._li{
+    display: flex;
+    justify-content: center;
+}
+.embed-responsive {
+    max-width: 100%; /* Makes it responsive */
+    overflow: hidden; /* Hides any overflow */
+}
+
+.embed-responsive iframe {
+    width: 100%; /* Ensures the iframe takes the full width */
+    height: auto; /* Adjusts the height automatically */
+    border: none; /* Removes the border */
+}
